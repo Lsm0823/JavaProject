@@ -9,10 +9,8 @@ public class Ex4 {
 		System.out.println(a1);
 		System.out.println(a2);
 		System.out.println(a3);
-		char b1 = '가';
 		char b2 = 44032;
 		char b3 = '\uac00';
-		System.out.println(b1);
 		System.out.println(b2);
 		System.out.println(b3);
 	}

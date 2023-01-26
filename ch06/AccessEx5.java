@@ -11,14 +11,15 @@ import java.awt.Frame;
 public class AccessEx5 extends Frame{
 	
 	public AccessEx5() {
-	
+		
+		System.out.println(paramString());	
 		
 	}
 	
 	public static void main(String[] args) {	
 		
 		AccessEx5 ac = new AccessEx5();
-		System.out.println(ac.paramString());	
+			
 		
 	}
 }
