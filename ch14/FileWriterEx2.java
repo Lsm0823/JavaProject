@@ -13,7 +13,7 @@ public class FileWriterEx2 extends MFrame implements ActionListener {
 
 	TextArea ta;
 	TextField tf;
-	Button save;
+	Button save, dirlog;
 	
 	public FileWriterEx2() {
 		super(300,400);
@@ -22,9 +22,11 @@ public class FileWriterEx2 extends MFrame implements ActionListener {
 		Panel p = new Panel();
 		p.add(tf = new TextField(25));
 		p.add(save = new Button("SAVE"));
+		p.add(dirlog = new Button("OPEN"));
 		ta.setEditable(false);
 		tf.addActionListener(this);
 		save.addActionListener(this);
+		dirlog.addActionListener(this);
 		add(p,BorderLayout.SOUTH);
 		validate();
 	}
@@ -62,6 +64,14 @@ public class FileWriterEx2 extends MFrame implements ActionListener {
 		} catch (Exception e) {
 			
 		}
+	}
+	
+	public void fileReader(String file) {
+		
+	}
+	
+	public void fileWriter(String file) {
+		
 	}
 	
 	public static void main(String[] args) {
