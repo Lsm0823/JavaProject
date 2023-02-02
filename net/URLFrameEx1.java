@@ -21,6 +21,7 @@ public class URLFrameEx1 extends MFrame implements ActionListener {
 	TextField tf;
 	Button connect;
 	Button save;
+	URL url;
 
 	public URLFrameEx1() {
 		super(500, 500);
@@ -42,9 +43,52 @@ public class URLFrameEx1 extends MFrame implements ActionListener {
 	@Override 
 	public void actionPerformed(ActionEvent e) {
 			Object obj = e.getSource();
+			if(obj == tf || obj ==connect) {
+				String host = tf.getText().trim();
+				try {
+					url = new URL(host);
+				} catch (Exception e2) {
+					ta.append("해당되는 호스트가 없습니다");
+				}
+				ta.setText("");
+				connectHost(url);
+				save.setEnabled(true);
+			}else if(obj == save) {
+				createFile(url.getHost(), ta.getText());
+				save.setEnabled(false);
+				tf.setText("http://");
+				ta.append("");
+				ta.append("저장하였습니다");
+				tf.requestFocus();
+			}
 			
 	}
 
+	public void connectHost(URL url) {
+		try {
+			BufferedReader br = new BufferedReader(
+					new InputStreamReader(url.openStream(), "UTF-8"));
+			String line = "";
+			while(true) {
+				line = br.readLine();
+				if(line==null)break;
+				ta.append(line + "\n");
+			}
+			br.close();
+		} catch (Exception e) {
+			ta.append("해당하는 호스트가 없습니다");
+		}
+	}
+	
+	public void createFile(String file, String content) {
+		try {
+			FileWriter fw = new FileWriter("net/" + file + ".html");
+			fw.write(content);
+			fw.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static void main(String[] args) {
 		URLFrameEx1 ex = new URLFrameEx1();
