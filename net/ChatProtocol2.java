@@ -23,6 +23,8 @@ public class ChatProtocol2 {
 	//(S ->C) CHATLIST:aaa;bbb;ccc;ȫ�浿;
 	public static final String CHATLIST = "CHATLIST"; 
 	
+	public static final String CHAT = "CHAT"; 
+	
 	public static final String MODE = ":";
 	
 	public static void main(String[] args) {

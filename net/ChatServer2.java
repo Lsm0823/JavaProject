@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.Socket;import java.nio.charset.spi.CharsetProvider;
 import java.util.Vector;
 
 import net.ChatServer1.ClientThread1;
@@ -75,7 +75,7 @@ public class ChatServer2 {
 		}
 		return ct;
 	}
-	
+	// findClient
 	class ClientThread2 extends Thread{
 	      
 		Socket sock;
@@ -93,7 +93,8 @@ public class ChatServer2 {
 	             e.printStackTrace();
 	          }
 	  	}
-		
+		//ClientThread2(생성자)
+	  	
 		@Override
 	    public void run() {
 			try {
@@ -112,6 +113,7 @@ public class ChatServer2 {
 				System.err.println(sock + "[" +id + "] 끊어짐..");
 			}
 		}
+		//run
 		
 		public void routine(String line) {
 			int idx = line.indexOf(ChatProtocol2.MODE);
@@ -126,8 +128,40 @@ public class ChatServer2 {
 				
 			}else if(cmd.equals(ChatProtocol2.CHATALL)) {
 				sendAllMessage(ChatProtocol2.CHATALL + ChatProtocol2.MODE + "[" + id + "]" + data);
+				
+			}else if(cmd.equals(ChatProtocol2.CHAT)){
+				//CHAT:bbb;밥먹자
+				idx = data.indexOf(';');
+				cmd = data.substring(0, idx);	//bbb
+				data = data.substring(idx + 1);	//밥먹자
+				//id : bbb를 가진 클라이언트를 검색
+				ClientThread2 ct = findClient(cmd);
+				if(ct!=null) {
+					//bbb에게 전송
+					ct.sendMessage(ChatProtocol2.CHAT + ChatProtocol2.MODE + "[" + id + "(S)]" + data);
+					// 자신에게 전송
+					sendMessage(ChatProtocol2.CHAT + ChatProtocol2.MODE + "[" + id + "(S)]" + data);
+					
+				}else {
+					//자신에게 보내는 메세지
+					sendMessage(ChatProtocol2.CHAT + ChatProtocol2.MODE + "[" + cmd + "]님이 접속자가 아닙니다.");
+				}
+			}else if(cmd.equals(ChatProtocol2.MESSAGE)) {
+				//NESSAGE:ccc;오늘뭐해?
+				idx = data.indexOf(';');
+				cmd = data.substring(0 , idx);	//ccc
+				data = data.substring(idx + 1);	//오늘뭐해?
+				ClientThread2 ct = findClient(cmd);
+				if(ct != null) {
+					//NESSAGE:aaa;오늘뭐해?
+					ct.sendMessage(ChatProtocol2.MESSAGE + ChatProtocol2.MODE + id + ";" + data);
+				}else {
+					sendMessage(ChatProtocol2.CHAT + ChatProtocol2.MODE + "[" + cmd + "]님이 접속자가 아닙니다.");
+				}
 			}
+			
 		}
+		//routine
 		
 		
 	    public void sendMessage(String msg) {
@@ -138,7 +172,7 @@ public class ChatServer2 {
 	 
 	public static void main(String[] args) { 
 		new ChatServer2();
-		String str = "CHATALL:오늘은 목요일입니다.";
+		String str = "ccc;오늘 뭐해?.";
 		int idx = str.indexOf(':');
 		System.out.println(str.substring(0,idx));
 		System.out.println(str.substring(idx + 1));
